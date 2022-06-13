@@ -5,10 +5,12 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate,logout
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import NewUserForm, UserForm, ProfileForm
+from .models import User,Projects
+
 # Create your views here.
 def welcome(request):
-
-  return render( request, "projects.html")
+	projects = Projects.objects.all()	
+	return render( request, "projects.html", {'projects': projects})
 
 def register_request(request):
 
@@ -58,8 +60,9 @@ def userpage(request):
 			profile_form.save()
 			messages.success(request,('Your wishlist was successfully updated!'))
 		else:
-		  messages.error(request,('Unable to complete request'))
-		return redirect('welcome')
+			messages.error(request,('Unable to complete request'))
+		return redirect('userpage')
+		
 	user_form = UserForm(instance=request.user)
 	profile_form = ProfileForm(instance=request.user.profile)
 	return render(request=request, template_name="profile.html", 

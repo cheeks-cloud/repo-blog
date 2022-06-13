@@ -1,3 +1,4 @@
+from sys import setprofile
 from django.db import models
 from django.contrib.auth.models import User
 from django.dispatch import receiver
@@ -33,7 +34,13 @@ class Profile(models.Model):
     @receiver(post_save, sender=User) 
     def save_user_profile(sender, instance, **kwargs):
         instance.profile.save()
-
+        
+    @receiver(post_save, sender=User, dispatch_uid='save_new_user_profile')
+    def save_profile(sender, instance, created, **kwargs):
+      user = instance
+      if created:
+        profile = setprofile(user=user)
+        profile.save()
 
 class Review(models.Model):
     CHOICES1 = [

@@ -1,1 +1,18 @@
-<h1 class ="text-center"> Hello</h1>
+{%extends 'base.html'%}
+{%load bootstrap4%}
+{%block content%}
+
+<div class="container two">
+  <div class="row">
+  {% for project in projects %}
+    <div class="image col-lg-6 col-md-12 mb-4 mb-lg-0 position-relative">
+      <h1> {{ project.title }}</h1>
+        <img src="{{ project.image.url }}" class="w-100 shadow-1-strong rounded mb-4 img-fluid image" alt="{{project.title }}"/>    
+         <a href="{{ project.link}}"> Click to view Project</a>
+     
+      </div>
+  
+  {% endfor %}
+  </div>
+</div>
+{%endblock%}
