@@ -104,7 +104,7 @@ def api_root(request, format=None):
         'projects': reverse('project-list', request=request, format=format)
     })
 
-@login_required(login_url='/login/')
+@login_required(login_url='login')
 def new_project(request):
 	if request.method == 'POST':
 			form = ProjectForm(request.POST,request.FILES)
@@ -116,7 +116,7 @@ def new_project(request):
 		form = ProjectForm()
 	return render(request, 'new_repo.html', {'form': form})
 
-@login_required(login_url='/login/')
+@login_required(login_url='login')
 def new_review(request):
 	if request.method == 'POST':
 			form = ReviewForm(request.POST,request.FILES)
@@ -137,17 +137,17 @@ def search(request):
     if request.method == "POST":
         term = request.POST.get('term')
         
-        image = Image.search_by_name(term)
+        project = Projects.search_by_title(term)
         
-        if image:
-            form = CommentForm()
+        if project:
+            form = ReviewForm()
             all_users = Profile.objects.all()
-            all_posts = image
-            comments = Comments.objects.all()
-            return render(request, 'index.html',
-                        {'posts': all_posts, 'form': form, 'comments': comments, 'all_users': all_users})
+            all_posts = project
+            reviews = Review.objects.all()
+            return render(request, 'welcome',
+                        {'posts': all_posts, 'form': form, 'reviews': reviews, 'all_users': all_users})
     
-    return redirect('home')
+    return redirect('search')
 
  
 
