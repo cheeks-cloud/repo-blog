@@ -1,0 +1,19 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,300&display=swap");
+
+*{
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  scroll-behavior: smooth;
+}
+body{
+  background-image: url('https://unsplash.com/photos/XXuVXLy5gHU');
+  background-repeat: no-repeat;
+  background-position: cover;
+
+}
+h1{
+  color: green;
+}
