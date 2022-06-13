@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save 
 from pygments.lexers import get_all_lexers
 from pygments.styles import get_all_styles
+from django.core.exceptions import ObjectDoesNotExist
 
 LEXERS = [item for item in get_all_lexers() if item[1]]
 LANGUAGE_CHOICES = sorted([(item[1][0], item[0]) for item in LEXERS])
@@ -38,7 +39,9 @@ class Profile(models.Model):
 
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
-        if created:
+        try:
+          instance.profile.save()
+        except ObjectDoesNotExist:
           Profile.objects.create(user=instance)
 
     @receiver(post_save, sender=User) 
