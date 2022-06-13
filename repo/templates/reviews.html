@@ -1,0 +1,12 @@
+{%extends 'base.html'%}
+{% block content %}
+<div class="container" style="text-align : center; color:black;margin-top:40px;">
+  <div class="row">
+  {% for review in reviews %}
+   <p> {{review.user}} gave remark: {{review.design}} on This projects Design  and  </p> <br><br>
+    <p> remark: {{review.usability}} on This projects Usability</p><br>
+    <p> They also remerked:{{review.content}}</p>
+  {%endfor%}
+  <a  class="btn btn-outline-success three "href="{% url 'welcome'%}" > Back </a>
+
+{%endblock%}

@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate,logout
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import NewUserForm, UserForm,ReviewForm, ProfileForm,ProjectForm
-from .models import User,Projects
+from .models import User,Projects,Review
 from .serializers import ProjectsSerializer,UserSerializer
 from rest_framework import generics,permissions
 from rest_framework.decorators import api_view 
@@ -128,4 +128,5 @@ def new_review(request):
 		form = ReviewForm()
 	return render(request, 'new_review.html', {'review_form': form})
 def reviews(request):
-	
+	reviews = Review.objects.all()
+	return render(request, 'reviews.html', {'reviews': reviews})
