@@ -48,6 +48,18 @@ def logout_request(request):
 
 
 def userpage(request):
+	if request.method == "POST":
+		user_form = UserForm(request.POST, instance=request.user)
+		profile_form = ProfileForm(request.POST, instance=request.user.profile)
+		if user_form.is_valid():
+			user_form.save()
+			messages.success(request,('Your profile was successfully updated!'))
+		elif profile_form.is_valid():
+			profile_form.save()
+			messages.success(request,('Your wishlist was successfully updated!'))
+		else:
+		  messages.error(request,('Unable to complete request'))
+		return redirect('welcome')
 	user_form = UserForm(instance=request.user)
 	profile_form = ProfileForm(instance=request.user.profile)
 	return render(request=request, template_name="profile.html", 
