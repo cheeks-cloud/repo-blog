@@ -4,7 +4,7 @@ from django.contrib.auth import login
 from django.contrib import messages
 from django.contrib.auth import login, authenticate,logout
 from django.contrib.auth.forms import AuthenticationForm
-
+from .forms import NewUserForm, UserForm, ProfileForm
 # Create your views here.
 def welcome(request):
 
@@ -47,6 +47,11 @@ def logout_request(request):
 	return redirect("welcome")
 
 
+def userpage(request):
+	user_form = UserForm(instance=request.user)
+	profile_form = ProfileForm(instance=request.user.profile)
+	return render(request=request, template_name="profile.html", 
+	context={"user":request.user, "user_form":user_form, "profile_form":profile_form })
 
 
 
