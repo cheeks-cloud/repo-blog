@@ -4,13 +4,14 @@ from django.contrib.auth import login
 from django.contrib import messages
 from django.contrib.auth import login, authenticate,logout
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import NewUserForm, UserForm, ProfileForm
+from .forms import NewUserForm, UserForm, ProfileForm,ProjectForm
 from .models import User,Projects
 from .serializers import ProjectsSerializer,UserSerializer
 from rest_framework import generics,permissions
-from rest_framework.decorators import api_view # new
-from rest_framework.response import Response # new
-from rest_framework.reverse import reverse # new
+from rest_framework.decorators import api_view 
+from rest_framework.response import Response 
+from rest_framework.reverse import reverse 
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def welcome(request):
@@ -102,6 +103,15 @@ def api_root(request, format=None):
         'projects': reverse('project-list', request=request, format=format)
     })
 
-
-
+@login_required(login_url='/login/')
+def new_project(request):
+	if request.method == 'POST':
+			form = ProjectForm(request.POST,request.FILES)
+			if form.is_valid():
+				new_post = form.save()
+				new_post.save_repo()
+			return redirect('/welcome/')
+	else:
+		form = ProjectForm()
+	return render(request, 'new_repo.html', {'form': form})
 
