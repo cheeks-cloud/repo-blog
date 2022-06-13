@@ -11,9 +11,6 @@ LEXERS = [item for item in get_all_lexers() if item[1]]
 LANGUAGE_CHOICES = sorted([(item[1][0], item[0]) for item in LEXERS])
 STYLE_CHOICES = sorted([(item, item) for item in get_all_styles()])
 
-
-
-
 # Create your models here.
 
 class Projects(models.Model):
@@ -29,13 +26,11 @@ class Projects(models.Model):
 
     def __str__(self):
       return self.title
-
-
 class Profile(models.Model): 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    bio = models.TextField()
+    bio = models.TextField(null=True)
     image = models.ImageField(default='default.jpg', upload_to='profile_pics')
-    projects = models.ForeignKey(Projects, on_delete=models.CASCADE)
+    projects = models.ForeignKey(Projects, on_delete=models.CASCADE,blank=True, null=True)
 
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
@@ -47,13 +42,7 @@ class Profile(models.Model):
     @receiver(post_save, sender=User) 
     def save_user_profile(sender, instance, **kwargs):
         instance.profile.save()
-        
-    @receiver(post_save, sender=User, dispatch_uid='save_new_user_profile')
-    def save_profile(sender, instance, created, **kwargs):
-      user = instance
-      if created:
-        profile = setprofile(user=user)
-        profile.save()
+   
 
 class Review(models.Model):
     CHOICES1 = [
