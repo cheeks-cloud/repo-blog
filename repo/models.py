@@ -26,6 +26,11 @@ class Projects(models.Model):
     def save_repo(self):
        self.save()
 
+    @classmethod
+    def search_by_title(cls, search_term):
+        project = cls.objects.filter(project_title_icontains=search_term)
+        return project
+
     def __str__(self):
       return self.title
 class Profile(models.Model): 

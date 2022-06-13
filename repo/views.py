@@ -130,3 +130,26 @@ def new_review(request):
 def reviews(request):
 	reviews = Review.objects.all()
 	return render(request, 'reviews.html', {'reviews': reviews})
+
+@login_required(login_url='login')
+def search(request):
+    
+    if request.method == "POST":
+        term = request.POST.get('term')
+        
+        image = Image.search_by_name(term)
+        
+        if image:
+            form = CommentForm()
+            all_users = Profile.objects.all()
+            all_posts = image
+            comments = Comments.objects.all()
+            return render(request, 'index.html',
+                        {'posts': all_posts, 'form': form, 'comments': comments, 'all_users': all_users})
+    
+    return redirect('home')
+
+ 
+
+
+
