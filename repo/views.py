@@ -5,8 +5,8 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate,logout
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import NewUserForm, UserForm,ReviewForm, ProfileForm,ProjectForm
-from .models import User,Projects,Review
-from .serializers import ProjectsSerializer,UserSerializer
+from .models import User,Projects,Review,Profile
+from .serializers import ProjectsSerializer,ProfileSerializer
 from rest_framework import generics,permissions
 from rest_framework.decorators import api_view 
 from rest_framework.response import Response 
@@ -78,7 +78,7 @@ def userpage(request):
 class ProjectsList(generics.ListCreateAPIView):
     queryset = Projects.objects.all()
     serializer_class = ProjectsSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def perform_create(self, serializer): 
         serializer.save(owner=self.request.user)
@@ -86,16 +86,16 @@ class ProjectsList(generics.ListCreateAPIView):
 class ProjectsDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Projects.objects.all()
     serializer_class = ProjectsSerializer
-permission_classes = (permissions.IsAuthenticatedOrReadOnly,) # new
-
-class UserList(generics.ListAPIView): 
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 
-class UserDetail(generics.RetrieveAPIView): 
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+
+class ProfileList(generics.ListCreateAPIView):
+		queryset = Profile.objects.all()
+		serializer_class = ProfileSerializer
+		permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+		def perform_create(self, serializer): 
+				serializer.save(owner=self.request.user)
 
 @api_view(['GET'])
 def api_root(request, format=None):

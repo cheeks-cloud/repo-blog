@@ -11,14 +11,10 @@ urlpatterns = [
     path('add/',views.new_project,name = 'new-project'),
     path('views/',views.new_review,name = 'new-review'),
     path('allviews/',views.reviews,name = 'reviews'),
-
-
-
     path("user", views.userpage, name = "userpage"),
-    path('projects/', views.ProjectsList.as_view()),
+    path('projects/', views.ProjectsList.as_view(),name = 'project'),
     path('projects/<int:pk>/', views.ProjectsDetail.as_view()),
-    path('users/', views.UserList.as_view()),
-    path('users/<int:pk>/', views.UserDetail.as_view()),
+    path('profiles',views.ProfileList.as_view(),name = 'profile_list'),
     path('api/', views.api_root),
 ]
 if settings.DEBUG:

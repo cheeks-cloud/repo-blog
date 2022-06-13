@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import post_save 
+from pygments import highlight 
+from pygments.formatters.html import HtmlFormatter
 from pygments.lexers import get_all_lexers
 from pygments.styles import get_all_styles
 from django.core.exceptions import ObjectDoesNotExist
