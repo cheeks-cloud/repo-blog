@@ -9,11 +9,19 @@
   scroll-behavior: smooth;
 }
 body{
-  background-image: url('https://unsplash.com/photos/XXuVXLy5gHU');
+  background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEcyURKFKZ4jXtWvr7UQS0-aqcAdlYFtJnZgSckn04Ca8-L0xSbdJ0AQGktxNbTxFuBwc&usqp=CAU');
   background-repeat: no-repeat;
   background-position: cover;
-
+  
+}
+p{
+  color: beige;
 }
 h1{
   color: green;
+}
+.btn:hover{
+  background-color:green;
+  padding: 20px;
+  color: black;
 }
