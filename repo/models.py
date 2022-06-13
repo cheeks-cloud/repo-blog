@@ -18,7 +18,7 @@ class Projects(models.Model):
     image= models.ImageField(upload_to='images/')
     description = models.TextField()
     link= models.URLField(max_length = 200)
-    owner = models.ForeignKey('auth.User', related_name='projects', on_delete=models.CASCADE)
+    owner = models.ForeignKey('auth.User', related_name='projects', on_delete=models.CASCADE,blank=True, null=True,)
     created = models.DateTimeField(auto_now_add=True)
 
     def save_repo(self):
@@ -62,6 +62,9 @@ class Review(models.Model):
     usability = models.CharField( choices=CHOICES, max_length=30)
     project_on_review = models.ForeignKey(Projects,on_delete=models.CASCADE)
     content = models.TextField()
+    
+    def save_review(self):
+       self.save()
 
     def __str__(self):
       return self.content

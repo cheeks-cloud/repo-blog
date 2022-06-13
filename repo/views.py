@@ -4,7 +4,7 @@ from django.contrib.auth import login
 from django.contrib import messages
 from django.contrib.auth import login, authenticate,logout
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import NewUserForm, UserForm, ProfileForm,ProjectForm
+from .forms import NewUserForm, UserForm,ReviewForm, ProfileForm,ProjectForm
 from .models import User,Projects
 from .serializers import ProjectsSerializer,UserSerializer
 from rest_framework import generics,permissions
@@ -56,6 +56,7 @@ def logout_request(request):
 
 
 def userpage(request):
+	projects = Projects.objects.all()	
 	if request.method == "POST":
 		user_form = UserForm(request.POST, instance=request.user)
 		profile_form = ProfileForm(request.POST, instance=request.user.profile)
@@ -72,7 +73,7 @@ def userpage(request):
 	user_form = UserForm(instance=request.user)
 	profile_form = ProfileForm(instance=request.user.profile)
 	return render(request=request, template_name="profile.html", 
-	context={"user":request.user, "user_form":user_form, "profile_form":profile_form })
+	context={"user":request.user, "user_form":user_form, "profile_form":profile_form ,'projects': projects})
 
 class ProjectsList(generics.ListCreateAPIView):
     queryset = Projects.objects.all()
@@ -110,8 +111,21 @@ def new_project(request):
 			if form.is_valid():
 				new_post = form.save()
 				new_post.save_repo()
-			return redirect('/welcome/')
+			return redirect('welcome')
 	else:
 		form = ProjectForm()
 	return render(request, 'new_repo.html', {'form': form})
 
+@login_required(login_url='/login/')
+def new_review(request):
+	if request.method == 'POST':
+			form = ReviewForm(request.POST,request.FILES)
+			if form.is_valid():
+				new_rev = form.save()
+				new_rev.save_review()
+			return redirect('welcome')
+	else:
+		form = ReviewForm()
+	return render(request, 'new_review.html', {'review_form': form})
+def reviews(request):
+	

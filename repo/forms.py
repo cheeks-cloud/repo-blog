@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Profile,Projects
+from .models import Profile,Projects,Review
 
 class NewUserForm(UserCreationForm):
 	email = forms.EmailField(required=True)
@@ -37,3 +37,12 @@ class ProjectForm(forms.ModelForm):
 		image = forms.ImageField()
 		description = forms.CharField()
 		link= forms.URLField()
+
+
+class ReviewForm(forms.ModelForm):
+	class Meta:
+		model = Review
+		exclude=['project_on_review']
+		design = forms.CharField()
+		content = forms.Textarea()
+		usability = forms.CharField()

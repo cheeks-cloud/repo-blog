@@ -2,12 +2,11 @@
 {% load bootstrap4 %}
 {% block content %}
 <div class="container third">
-  <form  action="{%url 'new-project'%}" method="post" enctype="multipart/form-data">
+  <form  action="{%url 'new-review'%}" method="post" enctype="multipart/form-data">
     {%csrf_token%}
-    {% bootstrap_form form%}
+    {% bootstrap_form review_form%}
     <input type="submit" class="btn btn-success btn-lg" value="Post">
   </form>
 </div>
-
 
 {% endblock content %}
