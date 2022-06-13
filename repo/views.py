@@ -6,6 +6,11 @@ from django.contrib.auth import login, authenticate,logout
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import NewUserForm, UserForm, ProfileForm
 from .models import User,Projects
+from .serializers import ProjectsSerializer,UserSerializer
+from rest_framework import generics,permissions
+from rest_framework.decorators import api_view # new
+from rest_framework.response import Response # new
+from rest_framework.reverse import reverse # new
 
 # Create your views here.
 def welcome(request):
@@ -68,7 +73,34 @@ def userpage(request):
 	return render(request=request, template_name="profile.html", 
 	context={"user":request.user, "user_form":user_form, "profile_form":profile_form })
 
+class ProjectsList(generics.ListCreateAPIView):
+    queryset = Projects.objects.all()
+    serializer_class = ProjectsSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly)
 
+    def perform_create(self, serializer): 
+        serializer.save(owner=self.request.user)
+
+class ProjectsDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Projects.objects.all()
+    serializer_class = ProjectsSerializer
+permission_classes = (permissions.IsAuthenticatedOrReadOnly,) # new
+
+class UserList(generics.ListAPIView): 
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserDetail(generics.RetrieveAPIView): 
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+@api_view(['GET'])
+def api_root(request, format=None):
+    return Response({
+        'users': reverse('user-list', request=request, format=format),
+        'projects': reverse('project-list', request=request, format=format)
+    })
 
 
 

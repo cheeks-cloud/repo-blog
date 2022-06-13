@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'repo.apps.RepoConfig',
     'bootstrap4',
     'crispy_forms',
+    'rest_framework'
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
