@@ -41,12 +41,13 @@
  * CSS  which was used to style the page.
  * Bootstrap to help in styling.
  * Django Frameworks.
- * Heroku
+ * Heroku for deployment.
  
 
  ## Reference
   * Bootstrap starter template.
   * Django Documentation
+  * free coders templates
   
 
   [Go Back to the top]( #)
